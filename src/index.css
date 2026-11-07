@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: `dark:` utilities follow html.dark, not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+html.dark,
+[data-theme="dark"] {
+  --bg-primary: #080A10;
+  --bg-surface: #121722;
+  --bg-surface-elevated: #161C28;
+  --bg-surface-sunken: #0D1019;
+  --bg-card: #121722;
+  --text-primary: #F5F5F7;
+  --text-secondary: #A5ADBC;
+  --text-muted: #64748B;
+  --accent-crimson: #E11D48;
+  --accent-hover: #c9183e;
+  --accent-subtle: rgba(225, 29, 72, 0.15);
+  --border-subtle: #1E2433;
+  --border-strong: #232B3E;
+  --header-bg: rgba(8, 10, 16, 0.92);
+  --footer-bg: #090C14;
+  --input-bg: #0D1019;
+  --overlay-bg: rgba(8, 10, 16, 0.82);
+  --shadow-card: 0 4px 24px -2px rgba(0, 0, 0, 0.5);
+  --ambient-bloom: rgba(225, 29, 72, 0.16);
+  --ambient-silver: rgba(255, 255, 255, 0.05);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+html.light,
+[data-theme="light"] {
+  /* Refined off-white background & crisp card surfaces per Task 03 */
+  --bg-primary: #F1F2F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-sunken: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --text-primary: #151925;
+  --text-secondary: #596273;
+  --text-muted: #7E8B9E;
+  --accent-crimson: #D71945;
+  --accent-hover: #be123c;
+  --accent-subtle: rgba(215, 25, 69, 0.08);
+  --border-subtle: #E1E5EC;
+  --border-strong: #D1D7E2;
+  --header-bg: rgba(241, 242, 245, 0.94);
+  --footer-bg: #E9ECF2;
+  --input-bg: #FFFFFF;
+  --overlay-bg: rgba(241, 242, 245, 0.88);
+  --shadow-card: 0 2px 14px -2px rgba(21, 25, 37, 0.06), 0 1px 3px 0 rgba(21, 25, 37, 0.04);
+  --ambient-bloom: rgba(215, 25, 69, 0.05);
+  --ambient-silver: rgba(140, 150, 170, 0.08);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ----------------------------------------------------
+   Premium 3D card system (hover tilt + theme flip)
+   Applied via the shared `card3d` class on content cards.
+   Theme colours come from the existing CSS variables, so
+   dark/light surfaces switch automatically with the theme.
+   ---------------------------------------------------- */
+.card3d {
+  transform: perspective(1100px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translateY(var(--card-ty, 0px));
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.card3d:hover {
+  --card-ty: -5px;
+  filter: drop-shadow(0 16px 32px rgba(225, 29, 72, 0.14));
+}
+html.light .card3d:hover {
+  filter: drop-shadow(0 16px 32px rgba(21, 25, 37, 0.1));
+}
+/* Deck flip — compact three-column rows: 360° playing-card turn, cascade stagger */
+/* One coordinated flip for every content card: the card turns edge-on — theme
+   colours are already updated at that instant — the rotation direction switches
+   at the concealed midpoint, and it settles facing the viewer. The turn never
+   passes edge-on, so content can never appear mirrored. */
+html[data-card-flip='a'] .card3d {
+  animation: card3d-flip-single-a 0.65s cubic-bezier(0.45, 0, 0.2, 1);
+}
+html[data-card-flip='b'] .card3d {
+  animation: card3d-flip-single-b 0.65s cubic-bezier(0.45, 0, 0.2, 1);
+}
+/* Three-card rows cascade left-to-right */
+html[data-card-flip='a'] .card3d-deck:nth-child(2),
+html[data-card-flip='b'] .card3d-deck:nth-child(2) {
+  animation-delay: 90ms;
+}
+html[data-card-flip='a'] .card3d-deck:nth-child(3),
+html[data-card-flip='b'] .card3d-deck:nth-child(3) {
+  animation-delay: 180ms;
+}
+@keyframes card3d-flip-single-a {
+  0% { transform: perspective(1100px) rotateY(0deg); }
+  50% { transform: perspective(1100px) rotateY(90deg); }
+  50.01% { transform: perspective(1100px) rotateY(-90deg); }
+  100% { transform: perspective(1100px) rotateY(0deg); }
+}
+@keyframes card3d-flip-single-b {
+  0% { transform: perspective(1100px) rotateY(0deg); }
+  50% { transform: perspective(1100px) rotateY(-90deg); }
+  50.01% { transform: perspective(1100px) rotateY(90deg); }
+  100% { transform: perspective(1100px) rotateY(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card3d {
+    transform: none;
+    transition: none;
+  }
+  html[data-card-flip] .card3d {
+    animation: none;
+  }
+}
+
+/* Reduced-motion & mobile fallback rules */
+@media (prefers-reduced-motion: reduce) {
+  .global-bg-video,
+  .global-bg-video-light {
+    display: none !important;
+  }
+  .global-bg-fallback {
+    display: block !important;
+  }
+}
+
+/* Custom themed scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* ----------------------------------------------------
+   Theme-specific video & ambient atmospheric tuning
+   ---------------------------------------------------- */
+html.dark .global-bg-video {
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  filter: brightness(110%) contrast(105%);
+}
+
+html.light .global-bg-video {
+  /* Dark mode uses its own Veo video; the dark video is fully hidden in light. */
+  opacity: 0;
+  visibility: hidden;
+}
+
+html.light .global-bg-video-light {
+  /* Light-mode Veo video — fully visible in light theme. */
+  opacity: 1;
+  visibility: visible;
+}
+
+html.dark .global-bg-video-light {
+  /* Light-mode video is hidden (and paused) while dark. */
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Subtle, muted crimson and silver visual accents in light mode */
+html.dark .ambient-crimson-primary {
+  background-color: rgba(225, 29, 72, 0.16);
+  filter: blur(140px);
+}
+html.dark .ambient-crimson-secondary {
+  background-color: rgba(225, 29, 72, 0.10);
+  filter: blur(130px);
+}
+
+html.light .ambient-crimson-primary {
+  background-color: rgba(215, 25, 69, 0.05);
+  filter: blur(120px);
+}
+html.light .ambient-crimson-secondary {
+  background-color: rgba(140, 150, 170, 0.08);
+  filter: blur(100px);
+}
+
+/* Hero subtle bloom */
+html.dark .hero-ambient-bloom {
+  opacity: 0.16;
+}
+html.light .hero-ambient-bloom {
+  opacity: 0.06;
+}
+
+/* ----------------------------------------------------
+   Comprehensive Light Mode Fallback Overrides
+   ---------------------------------------------------- */
+html.light .bg-\[\#080A10\] {
+  background-color: var(--bg-primary) !important;
+}
+html.light .text-\[\#F5F5F7\] {
+  color: var(--text-primary) !important;
+}
+
+html.light .global-bg-fallback {
+  background-color: var(--bg-primary);
+}

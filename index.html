@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" class="h-full dark" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A10'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='800' fill='%23F5F5F7' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E" />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('bytebuilder-theme');
+          if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+          } else {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.style.colorScheme = 'dark';
+          }
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <title>BYTE BUILDER — Three Minds. One Vision. Infinite Possibilities.</title>
+    <meta name="description" content="Byte Builder — Software Engineering & AI Collective. Manav Kumar (Frontend & UI/UX), Anurag Sharma (Systems & Architecture), Sarfaraz (AI & Backend). Three Minds. One Vision. Infinite Possibilities." />
+    <meta property="og:title" content="BYTE BUILDER — Three Minds. One Vision. Infinite Possibilities." />
+    <meta property="og:description" content="Byte Builder — Software Engineering & AI Collective. Manav Kumar, Anurag Sharma, and Sarfaraz." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body class="h-full text-[#F5F5F7] bg-[#080A10] antialiased selection:bg-[#E11D48]/30 selection:text-[#FFFFFF]">
+    <div id="root" class="h-full"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

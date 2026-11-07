@@ -1,0 +1,13 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+/src - Copy/
+/.aistudio/
+/home_hero*.png
+/home_mobile.png
+/page_*.png
